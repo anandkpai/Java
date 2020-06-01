@@ -23,17 +23,18 @@ public class SortArray {
 		ArrayList<Integer> less    = new ArrayList<Integer> (this.data.size());
 		ArrayList<Integer> equal   = new ArrayList<Integer> (this.data.size());
 		ArrayList<Integer> greater = new ArrayList<Integer> (this.data.size());
-		Iterator<Integer>  values  = this.data.iterator();                   
+		Iterator<Integer>  values  = this.data.iterator();    
+		int value;
 		while (values.hasNext())
 		{
-			int value = values.next();
+			value = values.next();
 			if (p == value) equal.add(value);
 			else if (p <  value) less.add(value);
 			else greater.add(value);							
 		}
 		this.data = less;
-		equal.trimToSize();
-		greater.trimToSize();
+//		equal.trimToSize();
+//		greater.trimToSize();
 		ArrayList<ArrayList<Integer>> returnContainer = new ArrayList<ArrayList<Integer>>(2);
 		returnContainer.add(equal);
 		returnContainer.add(greater);		
@@ -90,7 +91,7 @@ public class SortArray {
 		int midpos        			 = this.data.size()/2 - 1 ;
 		ArrayList<Integer> rightdata = new ArrayList<Integer>(this.data.subList(midpos, this.data.size()-1));
 		this.data.subList(midpos, this.data.size()-1).clear();
-		this.data.trimToSize();
+//		this.data.trimToSize();
 		return new SortArray(rightdata);
 	}
 
