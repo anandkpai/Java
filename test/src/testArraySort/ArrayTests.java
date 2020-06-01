@@ -1,4 +1,4 @@
-package test;
+package testArraySort;
 
 public class ArrayTests {
 

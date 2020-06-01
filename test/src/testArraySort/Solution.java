@@ -1,4 +1,4 @@
-package test;
+package testArraySort;
 
 import java.util.ArrayList;
 import java.util.Random;

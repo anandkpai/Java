@@ -1,4 +1,4 @@
-package test;
+package testArraySort;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,12 +12,39 @@ public class SortArray {
 	
 	ArrayList<Integer>  data ;
 
-
     @Override
     public String toString() { 
         return data.toString(); 
     } 
-    	
+    		
+	static void randomfill(ArrayList<Integer>d,int size, int max_val)
+	{	
+		for (int i = 0; i < size ; i++)	{d.add(i, rand.nextInt(max_val));}						
+	}
+	
+	public SortArray(int n ) {
+		data = new ArrayList<Integer>(n);
+		randomfill(data, n, MAX_RANDOM_INT_VALUE);
+	}
+
+	public SortArray(int n, int m ) {
+		data = new ArrayList<Integer>(n);
+		randomfill(data, n, m);
+	}
+		
+	public SortArray() {
+		data = new ArrayList<Integer>(DEFAULT_ARRAY_CAPACITY);		
+		randomfill(data, DEFAULT_ARRAY_CAPACITY, MAX_RANDOM_INT_VALUE);
+	}
+	
+	public SortArray(ArrayList<Integer> d) {
+		this.data = d;
+	}
+		
+	public SortArray clone() {
+		return new SortArray((ArrayList<Integer>) this.data.clone());
+	}
+
 	public ArrayList<ArrayList<Integer>> splitOnVal(final int p)
 	{
 		ArrayList<Integer> less    = new ArrayList<Integer> (this.data.size());
@@ -41,29 +68,6 @@ public class SortArray {
 		return returnContainer;												
 	}	    
 		
-	static void randomfill(ArrayList<Integer>d,int size, int max_val)
-	{	
-		for (int i = 0; i < size ; i++)	{d.add(i, rand.nextInt(max_val));}						
-	}
-	
-	public SortArray(int n ) {
-		data = new ArrayList<Integer>(n);
-		randomfill(data, n, MAX_RANDOM_INT_VALUE);
-	}
-	
-	public SortArray() {
-		data = new ArrayList<Integer>(DEFAULT_ARRAY_CAPACITY);		
-		randomfill(data, DEFAULT_ARRAY_CAPACITY, MAX_RANDOM_INT_VALUE);
-	}
-	
-	public SortArray(ArrayList<Integer> d) {
-		this.data = d;
-	}
-		
-	public SortArray clone() {
-		return new SortArray((ArrayList<Integer>) this.data.clone());
-	}
-
 	public void quickSort()
 	{
 		if (this.data.size() >  1)
@@ -78,8 +82,7 @@ public class SortArray {
 			{
 				greater.quickSort();
 				this.data.addAll(greater.data);
-			}
-			
+			}			
 		}
 	}
 	
@@ -100,11 +103,9 @@ public class SortArray {
 		ArrayList<Integer> merged = new ArrayList<Integer>(this.data.size()+right.data.size());
 		int leftIndex 			  = 0;
 		int rightIndex 			  = 0; 
-		while ((leftIndex < this.data.size()) & (rightIndex < right.data.size()))
-		{
+		while ((leftIndex < this.data.size()) & (rightIndex < right.data.size())){
 			if (this.data.get(leftIndex) < right.data.get(rightIndex)) merged.add(this.data.get(leftIndex++));
-			else merged.add(right.data.get(rightIndex++));
-		}
+			else merged.add(right.data.get(rightIndex++));}
 		if (this.data.size()  > leftIndex ) merged.addAll(this.data.subList(leftIndex, this.data.size()));
 		if (right.data.size() > rightIndex) merged.addAll(right.data.subList(rightIndex, right.data.size()));
 		this.data = merged;
@@ -121,4 +122,24 @@ public class SortArray {
 		}		
 	}
 	
+	public void inplaceQuickSort(int low,int high){
+		int pivot = this.data.get(low+(high-low)/2);
+		int left  = low;
+		int right = high;
+		
+		while(left<=right) {
+			while (data.get(left)<pivot) left++;
+			while (data.get(right)>pivot) right--;
+			if (left<=right) swap(left++,right--);			
+		}
+		if (right>low) inplaceQuickSort(low,right);
+		if (left<high) inplaceQuickSort(left,high);
+	}
+	
+	private void swap(int left, int right){
+		int tmp = this.data.get(left);
+		this.data.set(left, this.data.get(right));
+		this.data.set(right,tmp);
+	}
+
 }
