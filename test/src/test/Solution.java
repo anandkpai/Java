@@ -15,7 +15,6 @@ public class Solution
 	public static void main(String[] args) {
 		int[] dupes = new int[DEFAULT_ARRAY_CAPACITY] ;
 		System.out.printf("before filling \t%6d\n",dupes.length);
-		for (int i=0;i<DEFAULT_ARRAY_CAPACITY;i++) System.out.println(dupes[i]);
 		
 		Random rand = new Random();
 		for (int i=0;i<DEFAULT_ARRAY_CAPACITY;i++) dupes[i] = rand.nextInt(MAX_RANDOM_INT_VALUE);
