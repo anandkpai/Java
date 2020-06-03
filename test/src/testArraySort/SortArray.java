@@ -125,8 +125,7 @@ public class SortArray {
 	public void inplaceQuickSort(int low,int high){
 		int pivot = this.data.get(low+(high-low)/2);
 		int left  = low;
-		int right = high;
-		
+		int right = high;		
 		while(left<=right) {
 			while (data.get(left)<pivot) left++;
 			while (data.get(right)>pivot) right--;

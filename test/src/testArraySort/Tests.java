@@ -3,7 +3,7 @@ package testArraySort;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Solution {
+public class Tests {
 
 	static Random rand 	= new Random();
 	static final int ARRAYLEN  = 10000000;
