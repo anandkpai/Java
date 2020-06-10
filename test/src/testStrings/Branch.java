@@ -4,14 +4,12 @@ import java.util.HashSet;
 
 
 
-public class Branch extends Tree implements Runnable {
+public class Branch extends Tree {
 	
 	private Branch parent;
 	private char chr;	
 	private String toString="";
-	private static int threadCount = 0;
-	private int index;
-	private String substr;
+	private static final boolean DUMMYVALUE = true;
 	
 	private Branch(){}
 	
@@ -21,25 +19,24 @@ public class Branch extends Tree implements Runnable {
 	}
 	
 	private Branch(Branch branch,int index, String substr) {
-		final int DUMMYVALUE = 1;
+
 		this.chr 	= substr.charAt(index);
 		this.parent = branch;
-		this.index  = index;
-		this.substr = substr;
+
+		if (index == 0 )
+			for (int i=1;i<substr.length();i++) new Branch(branch, i, substr);		
 		
-		if  (Branch.threadCount<Tests.MAX_THREADS) this.run();
-		else {
-		if (index < substr.length()-1) new Branch(branch, index+1, substr);
-		
+		// depth 
 		String nodeSignature = this.toString()+substr;
-		nodeSignature = this.parent != null?branch.toString()+nodeSignature:nodeSignature;
-		
+		nodeSignature = this.parent!=null?branch.toString()+nodeSignature:nodeSignature;		
 		if (Tree.nodeSignatures.putIfAbsent(nodeSignature, DUMMYVALUE)==null)
 			if (substr.length()==2) 
 				Tree.words.add(this.toString()+substr.substring(0,index)+substr.substring(index+1));
 			else 
 				new Branch(this,0,substr.substring(0,index)+substr.substring(index+1));
-		}
+		//breadth
+
+	
 	}
 	
 	@Override
@@ -59,23 +56,5 @@ public class Branch extends Tree implements Runnable {
 		if (!(o instanceof Branch )) return false;
 		Branch other = (Branch)o;
 		return this.toString().hashCode()==other.toString().hashCode()?true:false;
-	}
-
-	@Override
-	public void run() {
-		final int DUMMYVALUE = 1;
-		Branch.threadCount++;
-		Branch branch = this.parent;
-		if (index < substr.length()-1) new Branch(branch, index+1, substr);
-		
-		String nodeSignature = this.toString()+substr;
-		nodeSignature = this.parent != null?branch.toString()+nodeSignature:nodeSignature;
-		
-		if (Tree.nodeSignatures.putIfAbsent(nodeSignature, DUMMYVALUE)==null)
-			if (substr.length()==2) 
-				Tree.words.add(this.toString()+substr.substring(0,index)+substr.substring(index+1));
-			else 
-				new Branch(this,0,substr.substring(0,index)+substr.substring(index+1));		
-		Branch.threadCount--;
 	}	
 }

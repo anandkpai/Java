@@ -34,13 +34,20 @@ public class Tests {
 	
 	
 	
-	
 	public static void main(String[] args) {
-		
-		String s= "abcaaabbaccacac";
-		Tree.makeTree(s);
-//		Tree.print();
-		System.out.println(String.format("No of anagrams calculated %d\nword length %d\nTheorotical number %d",Tree.size(), s.length(),permutations(s)));
+
+		long start;
+		start = System.currentTimeMillis();
+		String s= "ababbdaaccdd";
+		Tree.init(s);
+		long reftime = System.currentTimeMillis()-start;
+//		Tree.print();		
+		System.out.printf("reference time       \t%12d\n", reftime);
+		System.out.printf("Word length          \t%12d\n", s.length());
+		System.out.printf("Anagrams calculated  \t%12d\n", Tree.size());
+		System.out.printf("Theoretical anagrams \t%12d\n", permutations(s));
+		System.out.print("Duplicates Array\t\t");
 		System.out.println(dupCharsCount(s));
+		
 	}	
 }
