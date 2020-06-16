@@ -1,5 +1,4 @@
 package testArraySort;
-
 import java.util.Random;
 
 public class QuickSort {
@@ -19,25 +18,34 @@ public class QuickSort {
 		for (int i = 0; i < arraySize; i++) data[i] = rand.nextInt(maxRndInt);		
 	}
 	
+	@Override
+	public String toString() {
+		String s="[";
+		int i;
+		for (i=0;i<data.length-1;i++) s+= String.format("%d",data[i])+",";
+		return s+String.format("%d",data[i])+"]";
+	}
 	
 	public void quicksort(int low,int high)
 	{
 		int pivot = data[low+(high-low)/2];
-		int left  = low;
-		int right = high;
-		while (left <= right) {
-			while (data[left] < pivot) left++;
-			while (data[right] > pivot) right--;
-			if (left <= right) swap(left++,right--);
+		int i = low;
+		int j = high;		
+		while (i<j) {
+			while (data[i]<pivot) i++;
+			while (data[j]>pivot) j--;			
+			swap(i++,j--);			
 		}
-		if (left<high) quicksort(left,high);
-		if (right>low) quicksort(low,right);
+		if (i<high) quicksort(i,high);
+		if (j>low)  quicksort(low,j);
 	}
 	
 	private void swap(int i,int j)
 	{
+		if (i==j) return;
 		int tmp = data[i];
 		data[i] = data[j];
 		data[j] = tmp;
 	}
 }
+

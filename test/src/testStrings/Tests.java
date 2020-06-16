@@ -37,17 +37,22 @@ public class Tests {
 	public static void main(String[] args) {
 
 		long start;
+		final String testSize = "1,000,000,000";				
+		final int TESTSIZE    = Integer.valueOf(testSize.replaceAll(",",""));
 		start = System.currentTimeMillis();
-		String s= "ababbdaaccdd";
-		Tree.init(s);
-		long reftime = System.currentTimeMillis()-start;
-//		Tree.print();		
-		System.out.printf("reference time       \t%12d\n", reftime);
-		System.out.printf("Word length          \t%12d\n", s.length());
-		System.out.printf("Anagrams calculated  \t%12d\n", Tree.size());
-		System.out.printf("Theoretical anagrams \t%12d\n", permutations(s));
-		System.out.print("Duplicates Array\t\t");
-		System.out.println(dupCharsCount(s));
+//		String s= "ababbdaaccddadf";
+//		System.out.println(s);
+		int[] test = new int[TESTSIZE];
+		for (int i=0;i<TESTSIZE;i++) test[i]=i;
+		
+//		Tree.init(s);
+		long reftime = System.currentTimeMillis()-start;	
+		System.out.printf("Compute time         \t%12d\n", reftime);
+//		System.out.printf("Word length          \t%12d\n", s.length());
+//		System.out.printf("Anagrams calculated  \t%12d\n", Tree.size());
+//		System.out.printf("Theoretical anagrams \t%12d\n", permutations(s));
+//		System.out.print("Duplicates Array\t\t");
+//		System.out.println(dupCharsCount(s));
 		
 	}	
 }

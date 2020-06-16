@@ -6,43 +6,41 @@ import java.util.HashSet;
 
 public class Branch extends Tree {
 	
-	private Branch parent;
+//	private Branch parent;
 	private char chr;	
 	private String toString="";
-	private static final boolean DUMMYVALUE = true;
+//	private static final boolean DUMMYVALUE = true;
 	
+	@SuppressWarnings("unused")
 	private Branch(){}
 	
 	protected Branch(Branch branch,String substr) {
 		this(branch,0,substr);
-		Branch.nodeSignatures.clear();
+		Tree.nodeSignatures.clear();
 	}
 	
-	private Branch(Branch branch,int index, String substr) {
+	private Branch(Branch parent ,int index, String substr) {
 
-		this.chr 	= substr.charAt(index);
-		this.parent = branch;
+		this.chr 	  = substr.charAt(index);
+		this.toString = parent!= null?parent.toString()+String.valueOf(this.chr):String.valueOf(this.chr);
 
+		//breadth
 		if (index == 0 )
-			for (int i=1;i<substr.length();i++) new Branch(branch, i, substr);		
+			for (int i=1;i<substr.length();i++) new Branch(parent, i, substr);		
 		
 		// depth 
 		String nodeSignature = this.toString()+substr;
-		nodeSignature = this.parent!=null?branch.toString()+nodeSignature:nodeSignature;		
-		if (Tree.nodeSignatures.putIfAbsent(nodeSignature, DUMMYVALUE)==null)
+		nodeSignature = parent!=null?parent.toString()+nodeSignature:nodeSignature;
+		
+		if (Tree.nodeSignatures.add(nodeSignature))
 			if (substr.length()==2) 
 				Tree.words.add(this.toString()+substr.substring(0,index)+substr.substring(index+1));
 			else 
-				new Branch(this,0,substr.substring(0,index)+substr.substring(index+1));
-		//breadth
-
-	
+				new Branch(this,0,substr.substring(0,index)+substr.substring(index+1));	
 	}
 	
 	@Override
 	public String toString() {
-		if (this.toString.length()==0) 
-			this.toString = this.parent != null?this.parent.toString()+String.valueOf(this.chr):String.valueOf(this.chr);
 		return this.toString;	
 	}
 	
