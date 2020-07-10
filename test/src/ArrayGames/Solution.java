@@ -84,8 +84,8 @@ public class Solution {
 //            int leap = scan.nextInt();
 //            
 //            int[] game = new int[n];
-//            for (int i = 0; i < n; i++) {
-//                game[i] = scan.nextInt();
+//            for (int val = 0; val < n; val++) {
+//                game[val] = scan.nextInt();
 //            }
 //            System.out.println( (canWin(leap, game)) ? "YES" : "NO" );
 //        }

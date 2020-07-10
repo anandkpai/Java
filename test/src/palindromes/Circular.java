@@ -92,8 +92,8 @@ public class Circular {
 			int odd, even;
 			for (int i=0;i<this.strlen;i++) { 
 				odd     = getConstrainedOdd(rotationIndex	, i, this.oddcache.get(i), this.strlen);
-//				odd  = getOddMax(r, i, this.strlen);								
-//				even = Integer.max(maxval,getEvenMax(r, i, this.strlen));
+//				odd  = getOddMax(r, val, this.strlen);								
+//				even = Integer.max(maxval,getEvenMax(r, val, this.strlen));
 				even     = getConstrainedEven(rotationIndex	, i, this.evencache.get(i), this.strlen);
 				maxval = Integer.max(maxval, Integer.max(odd,even));
 			}
