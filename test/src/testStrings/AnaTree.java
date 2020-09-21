@@ -8,15 +8,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
+import java.util.concurrent.CompletableFuture;
 
 public class AnaTree {
 	
 	static private final Set<String>  signatures = Collections.synchronizedSet(new HashSet<String>());	
 	static private final List<String> anagrams   = Collections.synchronizedList(new ArrayList<String>());
+	static private final List<CompletableFuture<Boolean>> completes = new ArrayList<>();
 	static private AtomicInteger      count      = new AtomicInteger(0);  
+	
 
 	
-	private static void buildAnaTree(String leftStr, String rightStr, int index ) {
+	private static boolean buildAnaTree(String leftStr, String rightStr, int index ) {
 		String signature = leftStr+":"+rightStr+":"+rightStr.toCharArray()[index];
 		if (signatures.add(signature)) {
 			if (rightStr.length() == 1) {
@@ -28,22 +31,34 @@ public class AnaTree {
 				String newRight = rightStr.substring(0, index) + rightStr.substring(index+1);
 				buildAnaTree(newLeft, newRight, 0);
 				if (index == 0) 
-					IntStream.range(1,rightStr.length())
+//					IntStream.range(1,rightStr.length())
 //						.parallel()
-							.forEach(i->buildAnaTree(leftStr, rightStr, i));					
+//							.forEach(i->CompletableFuture.supplyAsync(() -> buildAnaTree(leftStr, rightStr, i)));					
+					for (int i=1;i<rightStr.length();i++) {
+						final int j = i;
+						CompletableFuture<Boolean> future = 
+								CompletableFuture.supplyAsync(() -> buildAnaTree(leftStr, rightStr, j));
+						completes.add(future);
+						
+					}
 			}
 		}
+		return true;
 	}
 	
 	
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
 		
 		AnaTree.signatures.clear();
-		AnaTree.anagrams.clear();		
+		AnaTree.anagrams.clear();	
+		AnaTree.completes.clear();
 		String anastring ="abcdefghij"; 
 		AnaTree.buildAnaTree("", anastring, 0);
+		CompletableFuture<?>[] futuresArray = new CompletableFuture<?>[completes.size()];
+		CompletableFuture.allOf(completes.toArray(futuresArray));
 		DecimalFormat df = new DecimalFormat("#,##0");
 		long reftime = System.currentTimeMillis()-start;
 		
